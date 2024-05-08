@@ -34,10 +34,31 @@ class NaszDrawer extends StatelessWidget {
               ListTile(
                 onTap: ()  async { // add 'async' in case if needed
                   await Future.delayed(Duration(milliseconds: 200));
-                  context.go('/about');
+                  context.go('/visitus');
                   }, 
-                title: Text('jskaas;sad', style: TextStyle(color: const Color.fromARGB(230,255, 255, 255)))
-              )
+                title: Text('Odwiedź nas', style: TextStyle(color: const Color.fromARGB(230,255, 255, 255)))
+              ),
+              ListTile(
+                onTap: ()  async { // add 'async' in case if needed
+                  await Future.delayed(Duration(milliseconds: 200));
+                  context.go('/contact');
+                  }, 
+                title: Text('Kontakt', style: TextStyle(color: const Color.fromARGB(230,255, 255, 255)))
+              ),
+              ListTile(
+                onTap: ()  async { // add 'async' in case if needed
+                  await Future.delayed(Duration(milliseconds: 200));
+                  context.go('/education');
+                  }, 
+                title: Text('Edukacja', style: TextStyle(color: const Color.fromARGB(230,255, 255, 255)))
+              ),
+              ListTile(
+                onTap: ()  async { // add 'async' in case if needed
+                  await Future.delayed(Duration(milliseconds: 200));
+                  context.go('/community');
+                  }, 
+                title: Text('Społeczność', style: TextStyle(color: const Color.fromARGB(230,255, 255, 255)))
+              ),
           ]
         ),
     );

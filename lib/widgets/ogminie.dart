@@ -20,6 +20,7 @@ import 'homepage.dart' as HomePage;
 import 'foodpage.dart' as FoodPage;
 import 'calendarpage.dart' as CalendarPage;
 import 'scanerpage.dart' as ScanerPage;
+import 'package:koszernapolska/screens/scaffold_with_just_appbar.dart';
 
 class OGminiePage extends StatefulWidget {
   const OGminiePage({super.key});
@@ -31,10 +32,10 @@ class OGminiePage extends StatefulWidget {
 class _OGminiePageState extends State<OGminiePage> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [Container(
-            color: Color.fromARGB(255, 16, 16, 16),
-            child: Center(
+    return ScaffoldwithjustAppBar(
+      goBackToButton: '/news',
+      title: 'O Gminie',
+      child: Center(
               child: ElevatedButton(
                 onPressed: () {
                   context.go('/news');
@@ -42,7 +43,8 @@ class _OGminiePageState extends State<OGminiePage> {
                 child: Text('gogoog'),
               ),
             ),
-      ),]
-    );
+        );
+      
+    } 
   }
-}
+      

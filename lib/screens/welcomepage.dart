@@ -11,7 +11,7 @@ class StartPage extends StatelessWidget {
       child: Center(
         child: ElevatedButton(
           onPressed: () => context.go('/news'),
-           child: Text('Press to proceed')
+           child: Text('Press to proceed to the main program')
            ),
       )
     );

@@ -10,15 +10,21 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'dart:async';
 import 'globals.dart' as globals;
-import 'widgets/ogminie.dart'; 
+import 'widgets/ogminie.dart'; // tutaj OGminiePage(), sorry, juz tak nie robie wiecej
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:go_router/go_router.dart';
+import 'package:koszernapolska/screens/scaffold_with_nav_bar.dart';
 import 'widgets/homepage.dart' as HomePage;
 import 'widgets/foodpage.dart' as FoodPage;
 import 'widgets/calendarpage.dart' as CalendarPage;
 import 'widgets/scanerpage.dart' as ScanerPage;
 import 'package:koszernapolska/screens/welcomepage.dart' as WelcomePage;
-import 'package:koszernapolska/screens/scaffold_with_nav_bar.dart';
+import 'package:koszernapolska/widgets/visit_us_page.dart' as VisitUsPage;
+import 'package:koszernapolska/widgets/contact_page.dart' as ContactPage;
+import 'package:koszernapolska/widgets/education_page.dart' as EducationPage;
+import 'package:koszernapolska/widgets/community_page.dart' as CommunityPage;
+
+
 
 
 
@@ -38,7 +44,10 @@ GoRouter router = GoRouter(
   initialLocation: '/news',
   navigatorKey: _rootNavigatorKey,
   routes: [
-    
+        GoRoute(
+          path: '/',
+          builder:(context, state) => WelcomePage.StartPage(),
+        ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) => ScaffoldWithNavBar(navigationShell: navigationShell),
           branches: [
@@ -90,18 +99,28 @@ GoRouter router = GoRouter(
         GoRoute( // Strona z informacja o gminie --- page with the info about community
           path: '/about',
           builder:(context, state) => OGminiePage(),
-        )
+        ),
+        GoRoute(
+          path: '/visitus',
+          builder:(context, state) => VisitUsPage.MainPage(), 
+        ),
+        GoRoute(
+          path: '/contact',
+          builder: (context, state) => ContactPage.MainPage(),
+        ),
+        GoRoute(
+          path: '/education',
+          builder: (context, state) => EducationPage.MainPage(),
+          ),
+        GoRoute(
+          path: '/community',
+          builder:(context, state) => CommunityPage.MainPage(), 
+        ),
       ],
     );
   
 
-           
-
 // **** the end of the router section --- koniec sekcji router'a
-
-
-
-
 
 
 

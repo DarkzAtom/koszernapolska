@@ -17,7 +17,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      drawer: NaszDrawer(),
+      endDrawer: NaszDrawer(),
       appBar: AppBar(
         backgroundColor:  const Color.fromARGB(255, 0, 64, 164),
         title: const Text('Koszerna Polska'),
