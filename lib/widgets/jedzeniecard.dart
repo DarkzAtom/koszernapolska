@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -32,7 +33,7 @@ class JedzenieCard extends StatefulWidget {
   final Color? backgroundColor;
   final String label;
   final double? fontSize;
-  final String? imagelinkweb;
+  final CachedNetworkImage? imagelinkweb;
 
   @override
   State<JedzenieCard> createState() => _JedzenieCardState();
@@ -51,18 +52,19 @@ class _JedzenieCardState extends State<JedzenieCard> {
             child: AspectRatio(
               aspectRatio: 1/1,
               child: Container(
+                clipBehavior: Clip.hardEdge,
                 // height: double.infinity,
                 // width: double.infinity,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(32), color: widget.backgroundColor ?? Colors.transparent,),
               // color: widget.backgroundColor ?? Colors.transparent,
-              child: AspectRatio(aspectRatio: 1/1, child: Container(child: widget.imagelinkweb != null ? Image.network(widget.imagelinkweb!) : SizedBox.shrink() )),
+              child: AspectRatio(aspectRatio: 1/1, child: Container(child: widget.imagelinkweb != null ? widget.imagelinkweb! : SizedBox.shrink() )),
               ),
             ),
           ),
           
           Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: Center(child: SizedBox(height: 25, child: Text(widget.label, style: GoogleFonts.spaceGrotesk(textStyle: TextStyle(color: Colors.cyan, fontSize: (widget.fontSize != null && widget.fontSize !<= 18) ? widget.fontSize : 18))))),
+            child: Center(child: SizedBox(height: 25, child: FittedBox(fit: BoxFit.scaleDown,child: Text(widget.label, style: GoogleFonts.spaceGrotesk(textStyle: TextStyle(color: Colors.cyan, fontSize: (widget.fontSize != null && widget.fontSize !<= 18) ? widget.fontSize : 18)))))),
           )
         ]
       ),

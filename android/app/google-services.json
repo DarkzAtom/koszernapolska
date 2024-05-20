@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "674765051156",
+    "project_id": "koszernapolskaapp",
+    "storage_bucket": "koszernapolskaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674765051156:android:9f6315144e3066fc9e1e01",
+        "android_client_info": {
+          "package_name": "com.example.koszernapolska"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALRyaDSl8_PYlBG3Uz87CThFv4AOf7jDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

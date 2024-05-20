@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -8,12 +9,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'dart:async';
 import 'globals.dart' as globals;
 import 'widgets/ogminie.dart'; // tutaj OGminiePage(), sorry, juz tak nie robie wiecej
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:koszernapolska/screens/scaffold_with_nav_bar.dart';
+import 'image_loader.dart'; // image loader to prevent abruptive loading while the bottomnavbar page is already choosen
 import 'widgets/homepage.dart' as HomePage;
 import 'widgets/foodpage.dart' as FoodPage;
 import 'widgets/calendarpage.dart' as CalendarPage;
@@ -30,7 +33,11 @@ import 'package:koszernapolska/widgets/community_page.dart' as CommunityPage;
 
 
 
-void main() => runApp(const KoszerApp());
+void main() async{
+ WidgetsFlutterBinding.ensureInitialized();
+ await Firebase.initializeApp();
+  runApp(KoszerApp());
+}
 
 
 
@@ -71,7 +78,19 @@ GoRouter router = GoRouter(
                   path: 'recipes',
                   // parentNavigatorKey: _shellNavigatorKey,
                   builder: (context, state) => FoodPage.Recipes(),
-                )
+                ),
+                GoRoute(
+                  path: 'kosherplaces',
+                  builder: (context, state) => FoodPage.KosherPlaces(), 
+                ),
+                GoRoute(
+                  path: 'kosherlist',
+                  builder:(context, state) => FoodPage.KosherList(),
+                  ),
+                GoRoute(
+                  path: 'pesachlist',
+                  builder:(context, state) => FoodPage.PesachList(), 
+                ),
               ]
               ),
               ]
@@ -131,18 +150,15 @@ class KoszerApp extends StatelessWidget {
   const KoszerApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // FlutterStatusbarcolor.setStatusBarColor(Color.fromARGB(255, 0, 41, 107));
+  Widget build(BuildContext context) {    // FlutterStatusBarColor.setStatusBarColor(Color.fromARGB(255, 0, 41, 107))
+    // batch preload images
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: router, 
       theme: ThemeData(
         useMaterial3: true,
         dividerTheme: DividerThemeData(
-          color: Colors.transparent
-        )
-        // textTheme:
-        // TextTheme(bodyLarge: TextStyle(color: Colors.deepPurpleAccent),
-        // ),
+          color: Colors.transparent,
+        ),
       ),
     );
   }

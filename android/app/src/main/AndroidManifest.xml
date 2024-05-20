@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- this is where u leave all the permissions needed-->
+    <!-- Required to fetch data from the internet. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    
     <application
         android:label="koszernapolska"
         android:name="${applicationName}"

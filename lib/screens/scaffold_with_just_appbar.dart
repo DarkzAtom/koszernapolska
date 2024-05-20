@@ -2,24 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:koszernapolska/screens/naszdrawer.dart';
 import 'package:go_router/go_router.dart';
 
+Object pop = () {
+  
+};
 
 class ScaffoldwithjustAppBar extends StatelessWidget {
-  const ScaffoldwithjustAppBar({super.key, required this.title, this.goBackToButton, required this.child});
+  const ScaffoldwithjustAppBar({super.key, required this.title, required this.goBackToButton, required this.child});
 
   final Widget child;
   final String title;
-  final String? goBackToButton;
+  final dynamic goBackToButton;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:  goBackToButton != null ? IconButton(
+        leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            context.go(goBackToButton!);
+          onPressed: () async{
+            if (goBackToButton is String) {
+              await Future.delayed(Duration(milliseconds: 200));
+              context.go(goBackToButton);
+            }
+            else if (goBackToButton == pop) {
+              await Future.delayed(Duration(milliseconds: 200));
+              Navigator.pop(context);
+            }
           },
-        ) : null ?? null,
+        ) ,
         backgroundColor:  const Color.fromARGB(255, 0, 64, 164),
         title: Text(title),
         foregroundColor: Colors.white,
