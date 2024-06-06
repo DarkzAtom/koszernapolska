@@ -24,6 +24,7 @@ import 'calendarpage.dart' as CalendarPage;
 import 'scanerpage.dart' as ScanerPage;
 import 'jedzeniecard.dart';
 import 'package:koszernapolska/image_loader.dart';
+import 'package:koszernapolska/recipes/exporttexts.dart';
 
 
 /// !!!
@@ -121,7 +122,6 @@ class Recipes extends StatefulWidget {
   State<Recipes> createState() => _RecipesState();
 }
 
-final List<Map<String, dynamic>> _azaza = [{'name': 'sdsa', 'desc': 'thefirstafasd' }, {'name':'asdasdas', 'desc': 'say hi to the new world'}, {'name':'vsdbfsdbfjsd', 'desc': 'im not losloslo'}, {'name':'fgshdbfnksldsfdsdfsdf', 'desc': 'sfdsldfsd'}, {'name':'skgsodlsdsd', 'desc': 'sbhnjmk'}, {'name':'sgfjsk', 'desc':'sfskdfsd'}];
 
 class _RecipesState extends State<Recipes> {
   @override
@@ -149,7 +149,7 @@ class _RecipesState extends State<Recipes> {
             child: JedzenieCard(
               label: _azaza[index]['name'], 
               fontSize: 15, 
-              backgroundColor: Colors.green,
+              imagelinkweb: ImageLoader(_azaza[index]['link']),
             ),
           );
         }
@@ -171,8 +171,15 @@ class RecipesPageBuilder extends StatelessWidget {
       height: double.infinity,
       width: double.infinity,
       child: SingleChildScrollView(
-        child: Container(
-          child:  Center(child: Text(_azaza[index]['desc'], style: TextStyle(color: Colors.white))),
+        child: Column(
+          children: [
+            Container(padding: EdgeInsets.all(12),child: Text(_azaza[index]['name'], style: TextStyle(color: Colors.white, fontSize: 24))),
+            Container(child: ImageLoader(_azaza[index]['link']),),
+            Container(
+              padding: EdgeInsets.all(12),
+              child:  Text(_azaza[index]['desc'], style: TextStyle(color: Colors.white, fontSize: 16)),
+            ),
+          ],
         ),
         ),
       );
@@ -338,3 +345,18 @@ class PesachListPageBuilder extends StatelessWidget {
       );
   }
 }
+
+
+
+final List<Map<String, dynamic>> _azaza = [
+  {'name': 'Kugel Jerozolimski', 'desc': kugeljerozolimski, 'link': 'https://static.wixstatic.com/media/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg/v1/fill/w_284,h_284,fp_0.50_0.50,q_90,enc_auto/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg'}, 
+  {'name':'Śledź po wileńsku', 'desc': sledzpowilensku, 'link': 'https://static.wixstatic.com/media/a8ca8a_ad134cbc588d42c395276557ff50fff9~mv2.png/v1/fill/w_237,h_258,fp_0.50_0.50,q_95,enc_auto/a8ca8a_ad134cbc588d42c395276557ff50fff9~mv2.png'}, 
+  {'name': "Ma'amoul", 'desc': maamoul, 'link': 'https://static.wixstatic.com/media/a8ca8a_81db354d3eaa4516a9e32bebc08a9804~mv2.png/v1/fill/w_236,h_177,fp_0.50_0.50,q_95,enc_auto/a8ca8a_81db354d3eaa4516a9e32bebc08a9804~mv2.png'}, 
+  {'name':'Pieczone owoce', 'desc': pieczoneowoce, 'link': 'https://static.wixstatic.com/media/a8ca8a_8ce0e0e4c5e0483baa0c3ea5be7a54e8~mv2.jpg/v1/fill/w_237,h_133,fp_0.50_0.50,q_90,enc_auto/a8ca8a_8ce0e0e4c5e0483baa0c3ea5be7a54e8~mv2.jpg'}, 
+  {'name':'Szakszuka', 'desc': szakszuka, 'link': 'https://static.wixstatic.com/media/a8ca8a_9a39e7c5cf844afa9036687e42cfe30f~mv2.png/v1/fill/w_237,h_178,fp_0.50_0.50,q_95,enc_auto/a8ca8a_9a39e7c5cf844afa9036687e42cfe30f~mv2.png'}, 
+  {'name':'Buraki Noama', 'desc': burakiNoama, 'link': 'https://static.wixstatic.com/media/a8ca8a_c91188e37a58480d9327e15fdc289243~mv2.png/v1/fill/w_236,h_356,fp_0.50_0.50,q_95,enc_auto/a8ca8a_c91188e37a58480d9327e15fdc289243~mv2.png'},
+  {'name':'Humus to Mus', 'desc': humusToMus, 'link': 'https://static.wixstatic.com/media/a8ca8a_35a09378dbfb45c9a2de71591e71a7ae~mv2.png/v1/fill/w_237,h_536,fp_0.50_0.50,q_95,enc_auto/a8ca8a_35a09378dbfb45c9a2de71591e71a7ae~mv2.png'},
+  {'name':'Zimowy Kuskus', 'desc': zimowyKuskus, 'link': 'https://static.wixstatic.com/media/a8ca8a_a54ca850079640dc932145ad36a39339~mv2.png/v1/fill/w_237,h_133,fp_0.50_0.50,q_95,enc_auto/a8ca8a_a54ca850079640dc932145ad36a39339~mv2.png'},
+  {'name':'Klasyczne Latkes', 'desc': klasyczneLatkes, 'link': 'https://static.wixstatic.com/media/a8ca8a_6918a6c79f954022b670ccb260c4c969~mv2.png/v1/fill/w_236,h_133,fp_0.50_0.50,q_95,enc_auto/a8ca8a_6918a6c79f954022b670ccb260c4c969~mv2.png'},
+  {'name':'Sufganiyot', 'desc': sufganiyot, 'link': 'https://static.wixstatic.com/media/a8ca8a_f01391a3effc4ac594285337d4384270~mv2.jpg/v1/fill/w_356,h_200,fp_0.50_0.50,q_90,enc_auto/a8ca8a_f01391a3effc4ac594285337d4384270~mv2.jpg'},
+  ];
