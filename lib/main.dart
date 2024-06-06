@@ -139,18 +139,38 @@ GoRouter router = GoRouter(
           GoRoute(
             path: '/visitus',
             builder:(context, state) => VisitUsPage.MainPage(), 
+            onExit: (context) async {
+              await Future.delayed(Duration(milliseconds: 200));
+              context.go(globals.lastroute);
+              return true;
+            }
           ),
           GoRoute(
             path: '/contact',
             builder: (context, state) => ContactPage.MainPage(),
+            onExit: (context) async {
+              await Future.delayed(Duration(milliseconds: 200));
+              context.go(globals.lastroute);
+              return true;
+            }
           ),
           GoRoute(
             path: '/education',
             builder: (context, state) => EducationPage.MainPage(),
+            onExit: (context) async {
+              await Future.delayed(Duration(milliseconds: 200));
+              context.go(globals.lastroute);
+              return true;
+            }
             ),
           GoRoute(
             path: '/community',
-            builder:(context, state) => CommunityPage.MainPage(), 
+            builder:(context, state) => CommunityPage.MainPage(),
+            onExit: (context) async {
+              await Future.delayed(Duration(milliseconds: 200));
+              context.go(globals.lastroute);
+              return true;
+            } 
           ),
         ],
       );

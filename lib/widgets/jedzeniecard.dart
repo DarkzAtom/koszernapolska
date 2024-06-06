@@ -52,19 +52,26 @@ class _JedzenieCardState extends State<JedzenieCard> {
             child: AspectRatio(
               aspectRatio: 1/1,
               child: Container(
-                clipBehavior: Clip.hardEdge,
-                // height: double.infinity,
-                // width: double.infinity,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(32), color: widget.backgroundColor ?? Colors.transparent,),
-              // color: widget.backgroundColor ?? Colors.transparent,
-              child: AspectRatio(aspectRatio: 1/1, child: Container(child: widget.imagelinkweb != null ? widget.imagelinkweb! : SizedBox.shrink() )),
+                padding: EdgeInsets.all(8),
+                child: Container(
+                  padding: EdgeInsets.all(6),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(32), color: Color.fromARGB(255, 31, 31, 31), boxShadow: [BoxShadow(color: Color.fromARGB(6, 53, 53, 53).withOpacity(0.6), spreadRadius: 1, blurRadius: 5, offset: Offset(0, 3),),]),
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    // height: double.infinity,
+                    // width: double.infinity,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(32), color: Color.fromARGB(255, 31, 31, 31),),
+                  // color: widget.backgroundColor ?? Colors.transparent,
+                  child: AspectRatio(aspectRatio: 1/1, child: Container(child: widget.imagelinkweb != null ? widget.imagelinkweb! : SizedBox.shrink() )),
+                  ),
+                ),
               ),
             ),
           ),
           
           Padding(
             padding: const EdgeInsets.only(top: 4.0),
-            child: Center(child: SizedBox(height: 25, child: FittedBox(fit: BoxFit.scaleDown,child: Text(widget.label, style: GoogleFonts.spaceGrotesk(textStyle: TextStyle(color: Colors.cyan, fontSize: (widget.fontSize != null && widget.fontSize !<= 18) ? widget.fontSize : 18)))))),
+            child: Center(child: SizedBox(height: 25, child: FittedBox(fit: BoxFit.scaleDown,child: Text(widget.label, style: GoogleFonts.spaceGrotesk(textStyle: TextStyle(color: Color.fromARGB(255, 238, 237, 237), fontSize: (widget.fontSize != null && widget.fontSize !<= 18) ? widget.fontSize : 18)))))),
           )
         ]
       ),

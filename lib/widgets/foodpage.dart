@@ -63,7 +63,7 @@ class _StartPageState extends State<StartPage> {
                     },  
                   child: JedzenieCard(
                     label: 'Przepisy',
-                    backgroundColor: Colors.brown,
+                    backgroundColor: Color.fromARGB(255, 31, 31, 31),
                     imagelinkweb: ImageLoader("https://static.wixstatic.com/media/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg/v1/fill/w_284,h_284,fp_0.50_0.50,q_90,enc_auto/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg"), 
                   ),
                 ),
@@ -76,7 +76,7 @@ class _StartPageState extends State<StartPage> {
                     },  
                   child: JedzenieCard(
                     label: 'Koszerne Miejsca',
-                    backgroundColor: Colors.purple,
+                    // backgroundColor: Color.fromARGB(255, 31, 31, 31),
                   ),
                 ),
                 
@@ -87,7 +87,7 @@ class _StartPageState extends State<StartPage> {
                     context.go('/food/kosherlist');
                     },  
                   child: JedzenieCard(
-                    backgroundColor: Colors.amber,
+                    // backgroundColor: Colors.amber,
                     label: "Koszerna Lista",
                   ),
                 ),
@@ -100,7 +100,7 @@ class _StartPageState extends State<StartPage> {
                     context.go('/food/pesachlist');
                     },  
                   child: JedzenieCard(
-                    backgroundColor: Colors.lime,
+                    // backgroundColor: Colors.lime,
                     label: "Lista na Pesach",
                     
                     

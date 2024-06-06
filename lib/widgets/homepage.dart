@@ -71,7 +71,7 @@ class _StartPageState extends State<StartPage> {
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index){
                       return Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Color.fromARGB(255, 31, 31, 31)),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Color.fromARGB(255, 31, 31, 31), boxShadow: [BoxShadow(color: Color.fromARGB(6, 53, 53, 53).withOpacity(0.6), spreadRadius: 1, blurRadius: 5, offset: Offset(0, 3))]),
                         margin: EdgeInsets.all(8), // **tile-indentation** and here. SO IF YOU WANT to change the margin of the tile/ indent of a tile from the sides and between each other - than change those 2 params
                         clipBehavior: Clip.hardEdge,
                         child: Column(
