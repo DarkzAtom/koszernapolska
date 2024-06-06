@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'naszdrawer.dart';
+import 'package:koszernapolska/screencontroller.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
   /// Constructs an [ScaffoldWithNavBar].
-  const ScaffoldWithNavBar({
+  ScaffoldWithNavBar({
     required this.navigationShell,
     Key? key,
   }) : super(key: key ?? const ValueKey<String>('ScaffoldWithNavBar'));
@@ -80,9 +81,28 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
 
   void _onTap(BuildContext context, int index) {
+    if (index == navigationShell.currentIndex) {
+      switch (index) {
+        case 0:
+          scrollController.animateTo(0.0, duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+          break;
+        case 1:
+          context.go('/food');
+          break;
+        case 2:
+          context.go('/calendar');
+          break;
+        case 3:
+          context.go('/scaner');
+          break;
+      }
+    } else {
+
+
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,
-    );
+      );
+    }
   }
 }

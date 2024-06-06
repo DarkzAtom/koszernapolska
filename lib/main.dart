@@ -50,94 +50,111 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter router = GoRouter(
   initialLocation: '/news',
   navigatorKey: _rootNavigatorKey,
-  routes: [
-        GoRoute(
-          path: '/',
-          builder:(context, state) => WelcomePage.StartPage(),
-        ),
-        StatefulShellRoute.indexedStack(
-          builder: (context, state, navigationShell) => ScaffoldWithNavBar(navigationShell: navigationShell),
-          branches: [
-            StatefulShellBranch( // aktualnosci --- news
-              routes: <RouteBase>[
-                GoRoute(
-                  path: '/news',
-                  // parentNavigatorKey: _shellNavigatorKey,
-                  builder: (context, state) => const HomePage.StartPage(),
-                ),
-              ]
-              ),
-            StatefulShellBranch( // do zjedzenia --- food section
-              routes: <RouteBase>[
-                GoRoute(
-              path: '/food',
-              // parentNavigatorKey: _shellNavigatorKey,
-              builder: (context, state) => FoodPage.StartPage(),
-              routes: [
-                GoRoute(
-                  path: 'recipes',
-                  // parentNavigatorKey: _shellNavigatorKey,
-                  builder: (context, state) => FoodPage.Recipes(),
-                ),
-                GoRoute(
-                  path: 'kosherplaces',
-                  builder: (context, state) => FoodPage.KosherPlaces(), 
-                ),
-                GoRoute(
-                  path: 'kosherlist',
-                  builder:(context, state) => FoodPage.KosherList(),
+    routes: [
+          GoRoute(
+            path: '/',
+            builder:(context, state) => WelcomePage.StartPage(),
+          ),
+          StatefulShellRoute.indexedStack(
+            builder: (context, state, navigationShell) => ScaffoldWithNavBar(navigationShell: navigationShell),
+            branches: [
+              StatefulShellBranch( // aktualnosci --- news
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: '/news',
+                    // parentNavigatorKey: _shellNavigatorKey,
+                    builder: (context, state) {
+                     globals.lastroute = '/news';
+                     return const HomePage.StartPage();
+                    }
                   ),
-                GoRoute(
-                  path: 'pesachlist',
-                  builder:(context, state) => FoodPage.PesachList(), 
+                ]
                 ),
-              ]
-              ),
-              ]
-              ),
-            StatefulShellBranch( // kalendarz --- calendar section
-              routes: <RouteBase>[
-                GoRoute(
-                  path: '/calendar',
-                  // parentNavigatorKey: _shellNavigatorKey,
-                  builder: (context, state) => CalendarPage.StartPage(),
-              ),
-              ]
-              ),
-            StatefulShellBranch( // skaner --- kosher scaner section
-              routes: <RouteBase>[
-                GoRoute(
-                  path: '/scaner',
-                  // parentNavigatorKey: _shellNavigatorKey,
-                  builder:(context, state) => ScanerPage.StartPage(),
-              )
-              ]
-              ),
-          ]
+              StatefulShellBranch( // do zjedzenia --- food section
+                routes: <RouteBase>[
+                  GoRoute(
+                path: '/food',
+                // parentNavigatorKey: _shellNavigatorKey,
+                builder: (context, state) { 
+                  globals.lastroute = '/food';
+                  return const FoodPage.StartPage();
+                },
+                routes: [
+                  GoRoute(
+                    path: 'recipes',
+                    // parentNavigatorKey: _shellNavigatorKey,
+                    builder: (context, state) => FoodPage.Recipes(),
+                  ),
+                  GoRoute(
+                    path: 'kosherplaces',
+                    builder: (context, state) => FoodPage.KosherPlaces(), 
+                  ),
+                  GoRoute(
+                    path: 'kosherlist',
+                    builder:(context, state) => FoodPage.KosherList(),
+                    ),
+                  GoRoute(
+                    path: 'pesachlist',
+                    builder:(context, state) => FoodPage.PesachList(), 
+                  ),
+                ]
+                ),
+                ]
+                ),
+              StatefulShellBranch( // kalendarz --- calendar section
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: '/calendar',
+                    // parentNavigatorKey: _shellNavigatorKey,
+                    builder: (context, state) {
+                      globals.lastroute = '/calendar';
+                      return const CalendarPage.StartPage();
+                    }
+                ),
+                ]
+                ),
+              StatefulShellBranch( // skaner --- kosher scaner section
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: '/scaner',
+                    // parentNavigatorKey: _shellNavigatorKey,
+                    builder:(context, state) {
+                      globals.lastroute = '/scaner';
+                      return const ScanerPage.StartPage();
+                    }
+                )
+                ]
+                ),
+            ]
+            ),
+          GoRoute( // Strona z informacja o gminie --- page with the info about community
+            path: '/about',
+            builder:(context, state) => OGminiePage(),
+            onExit: (context) async {
+              await Future.delayed(Duration(milliseconds: 200));
+              context.go(globals.lastroute);
+              return true;
+            },        
           ),
-        GoRoute( // Strona z informacja o gminie --- page with the info about community
-          path: '/about',
-          builder:(context, state) => OGminiePage(),
-        ),
-        GoRoute(
-          path: '/visitus',
-          builder:(context, state) => VisitUsPage.MainPage(), 
-        ),
-        GoRoute(
-          path: '/contact',
-          builder: (context, state) => ContactPage.MainPage(),
-        ),
-        GoRoute(
-          path: '/education',
-          builder: (context, state) => EducationPage.MainPage(),
+          GoRoute(
+            path: '/visitus',
+            builder:(context, state) => VisitUsPage.MainPage(), 
           ),
-        GoRoute(
-          path: '/community',
-          builder:(context, state) => CommunityPage.MainPage(), 
-        ),
-      ],
-    );
-  
+          GoRoute(
+            path: '/contact',
+            builder: (context, state) => ContactPage.MainPage(),
+          ),
+          GoRoute(
+            path: '/education',
+            builder: (context, state) => EducationPage.MainPage(),
+            ),
+          GoRoute(
+            path: '/community',
+            builder:(context, state) => CommunityPage.MainPage(), 
+          ),
+        ],
+      );
+    
 
 // **** the end of the router section --- koniec sekcji router'a
 

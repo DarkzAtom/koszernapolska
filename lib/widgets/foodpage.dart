@@ -60,8 +60,6 @@ class _StartPageState extends State<StartPage> {
                   onTap: () async { // add 'async' in case if needed
                     await Future.delayed(Duration(milliseconds: 200));
                     context.go('/food/recipes');
-                    
-                    
                     },  
                   child: JedzenieCard(
                     label: 'Przepisy',

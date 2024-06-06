@@ -14,6 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import '../globals.dart' as globals;
+import 'package:koszernapolska/screencontroller.dart';
 import 'ogminie.dart'; 
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:go_router/go_router.dart';
@@ -65,6 +66,7 @@ class _StartPageState extends State<StartPage> {
             return  Container(
               color: Color.fromARGB(255, 16, 16, 16),
               child: ListView.builder(
+                    controller: scrollController,
                     padding: EdgeInsets.only(top: 8, bottom: 8),   // **tile-identation** i could've added the const here but as far as i understood i have to declare at the very very top, it's not usable
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index){

@@ -2,3 +2,5 @@
 
 library globals;
 
+String lastroute = '/news';
+
