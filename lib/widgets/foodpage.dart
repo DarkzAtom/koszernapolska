@@ -25,6 +25,8 @@ import 'scanerpage.dart' as ScanerPage;
 import 'jedzeniecard.dart';
 import 'package:koszernapolska/image_loader.dart';
 import 'package:koszernapolska/recipes/exporttexts.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 /// !!!
@@ -41,6 +43,8 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,7 +69,8 @@ class _StartPageState extends State<StartPage> {
                   child: JedzenieCard(
                     label: 'Przepisy',
                     backgroundColor: Color.fromARGB(255, 31, 31, 31),
-                    imagelinkweb: ImageLoader("https://static.wixstatic.com/media/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg/v1/fill/w_284,h_284,fp_0.50_0.50,q_90,enc_auto/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg"), 
+                    imageLink: 'lib/foodpageInitialPictures/przepisy.webp',
+                    isAssetImage: true, 
                   ),
                 ),
                 
@@ -77,6 +82,8 @@ class _StartPageState extends State<StartPage> {
                     },  
                   child: JedzenieCard(
                     label: 'Koszerne Miejsca',
+                    imageLink: 'lib/foodpageInitialPictures/koszerneMiejsca.png',
+                    isAssetImage: true,
                     // backgroundColor: Color.fromARGB(255, 31, 31, 31),
                   ),
                 ),
@@ -90,6 +97,8 @@ class _StartPageState extends State<StartPage> {
                   child: JedzenieCard(
                     // backgroundColor: Colors.amber,
                     label: "Koszerna Lista",
+                    imageLink: 'lib/foodpageInitialPictures/koszernaLista.jpg',
+                    isAssetImage: true,
                   ),
                 ),
                 
@@ -103,7 +112,8 @@ class _StartPageState extends State<StartPage> {
                   child: JedzenieCard(
                     // backgroundColor: Colors.lime,
                     label: "Lista na Pesach",
-                    
+                    imageLink: 'lib/foodpageInitialPictures/listaNaPesach.jpg',
+                    isAssetImage: true,
                     
                   ),
                 ),
@@ -115,6 +125,7 @@ class _StartPageState extends State<StartPage> {
 
 // Recipes section - sekcja z przepisami
 
+List<Map<String, dynamic>> dataRecipes = [];
 class Recipes extends StatefulWidget {
   const Recipes({super.key});
 
@@ -123,10 +134,37 @@ class Recipes extends StatefulWidget {
 }
 
 
-class _RecipesState extends State<Recipes> {
+class _RecipesState extends State<Recipes> 
+
+
+{
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+  final CollectionReference collection = FirebaseFirestore.instance.collection('foodpageposts/recipes/items');
+  QuerySnapshot querySnapshot = await collection.get();
+  dataRecipes = querySnapshot.docs.map((doc) => doc.data()).where((item) => item != null).toList().cast<Map<String, dynamic>>();
+  setState(() {});  // Call setState to trigger a rebuild of the widget with the new data
+}
+
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    if (dataRecipes.isEmpty){
+      return Container(height: double.infinity, width: double.infinity, color: Color.fromARGB(255, 16, 16, 16), child: Align(alignment: Alignment.center, child: Padding(
+        padding: const EdgeInsets.only(top: 0), // i wont remove this section, in case if i change my mind and i will want to get back to the topCenter alignment, so please dont look at this as if it's something stupid xDD
+        child: SizedBox(height: 50, child: Center(child: CircularProgressIndicator())),
+      )));
+    }
+    else {
+  return Container(
       color: Color.fromARGB(255, 16, 16, 16),
       child: GridView.builder(
         padding: EdgeInsets.all(8),
@@ -137,7 +175,7 @@ class _RecipesState extends State<Recipes> {
           childAspectRatio: 0.8,
           
         ), 
-        itemCount: _azaza.length,
+        itemCount: dataRecipes.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () async {
@@ -147,16 +185,16 @@ class _RecipesState extends State<Recipes> {
               );
             },
             child: JedzenieCard(
-              label: _azaza[index]['name'], 
+              label: dataRecipes[index]['name'], 
               fontSize: 15, 
-              imagelinkweb: ImageLoader(_azaza[index]['link']),
+              imageLink: dataRecipes[index]['link'],
             ),
           );
         }
       )
     );
   }
-}
+}}
 
 
 class RecipesPageBuilder extends StatelessWidget {
@@ -173,11 +211,11 @@ class RecipesPageBuilder extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Container(padding: EdgeInsets.all(12),child: Text(_azaza[index]['name'], style: TextStyle(color: Colors.white, fontSize: 24))),
-            Container(child: ImageLoader(_azaza[index]['link']),),
+            Container(padding: EdgeInsets.all(12),child: Text(dataRecipes[index]['name'], style: TextStyle(color: Colors.white, fontSize: 24))),
+            Container(child: ImageLoader(dataRecipes[index]['link']),),
             Container(
               padding: EdgeInsets.all(12),
-              child:  Text(_azaza[index]['desc'], style: TextStyle(color: Colors.white, fontSize: 16)),
+              child:  Text(dataRecipes[index]['desc'], style: TextStyle(color: Colors.white, fontSize: 16)),
             ),
           ],
         ),
@@ -191,7 +229,7 @@ class RecipesPageBuilder extends StatelessWidget {
 
 
 // Kosher Places section --- sekcja z koszernymi miejscami
-
+List<Map<String, dynamic>> dataKosherPlaces = [];
 class KosherPlaces extends StatefulWidget {
   const KosherPlaces({super.key});
 
@@ -199,22 +237,64 @@ class KosherPlaces extends StatefulWidget {
   State<KosherPlaces> createState() => _KosherPlacesState();
 }
 
-int index_temp_kosherplaces = 1;
+
 
 class _KosherPlacesState extends State<KosherPlaces> {
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+  final CollectionReference collection = FirebaseFirestore.instance.collection('foodpageposts/kosherPlaces/Warszawa');
+  QuerySnapshot querySnapshot = await collection.get();
+  dataKosherPlaces = querySnapshot.docs.map((doc) => doc.data()).where((item) => item != null).toList().cast<Map<String, dynamic>>();
+  setState(() {});  // Call setState to trigger a rebuild of the widget with the new data
+}
+
+
   @override
   Widget build(BuildContext context) {
+    if (dataKosherPlaces.isEmpty){
+      return Container(height: double.infinity, width: double.infinity, color: Color.fromARGB(255, 16, 16, 16), child: Align(alignment: Alignment.center, child: Padding(
+        padding: const EdgeInsets.only(top: 0), // i wont remove this section, in case if i change my mind and i will want to get back to the topCenter alignment, so please dont look at this as if it's something stupid xDD
+        child: SizedBox(height: 50, child: Center(child: CircularProgressIndicator())),
+      )));
+    }
+    else {
     return Container(
-      color: Colors.amber,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => KosherPlacesPageBuilder(index: index_temp_kosherplaces)));
-        }, 
-        child: Text('press me', style: TextStyle(color: Colors.black),),
-
-      ),
+      color: Color.fromARGB(255, 16, 16, 16),
+      child: GridView.builder(
+        padding: EdgeInsets.all(8),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisSpacing: 12, 
+          mainAxisSpacing: 8, 
+          crossAxisCount: 3, 
+          childAspectRatio: 0.8,
+          
+        ), 
+        itemCount: dataKosherPlaces.length,
+        itemBuilder: (BuildContext context, int index) {
+          return GestureDetector(
+            onTap: () async {
+              await Future.delayed(Duration(microseconds: 200));
+              Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => KosherPlacesPageBuilder(index: index))
+              );
+            },
+            child: JedzenieCard(
+              label: dataKosherPlaces[index]['name'], 
+              fontSize: 15, 
+              imageLink: dataKosherPlaces[index]['imageLink'],
+            ),
+          );
+        }
+      )
     );
   }
+}
 }
 
 
@@ -232,7 +312,7 @@ class KosherPlacesPageBuilder extends StatelessWidget {
       width: double.infinity,
       child: SingleChildScrollView(
         child: Container(
-          child:  Center(child: Text(_azaza[index]['desc'], style: TextStyle(color: Colors.white))),
+          child:  Center(child: Text(dataKosherPlaces[index]['desc'], style: TextStyle(color: Colors.white))),
         ),
         ),
       );
@@ -285,7 +365,7 @@ class KosherListPageBuilder extends StatelessWidget {
       width: double.infinity,
       child: SingleChildScrollView(
         child: Container(
-          child:  Center(child: Text(_azaza[index]['desc'], style: TextStyle(color: Colors.white))),
+          child:  Center(child: Text(dataRecipes[index]['desc'], style: TextStyle(color: Colors.white))),
         ),
         ),
       );
@@ -339,7 +419,7 @@ class PesachListPageBuilder extends StatelessWidget {
       width: double.infinity,
       child: SingleChildScrollView(
         child: Container(
-          child:  Center(child: Text(_azaza[index]['desc'], style: TextStyle(color: Colors.white))),
+          child:  Center(child: Text(dataRecipes[index]['desc'], style: TextStyle(color: Colors.white))),
         ),
         ),
       );
@@ -348,15 +428,15 @@ class PesachListPageBuilder extends StatelessWidget {
 
 
 
-final List<Map<String, dynamic>> _azaza = [
-  {'name': 'Kugel Jerozolimski', 'desc': kugeljerozolimski, 'link': 'https://static.wixstatic.com/media/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg/v1/fill/w_284,h_284,fp_0.50_0.50,q_90,enc_auto/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg'}, 
-  {'name':'Śledź po wileńsku', 'desc': sledzpowilensku, 'link': 'https://static.wixstatic.com/media/a8ca8a_ad134cbc588d42c395276557ff50fff9~mv2.png/v1/fill/w_237,h_258,fp_0.50_0.50,q_95,enc_auto/a8ca8a_ad134cbc588d42c395276557ff50fff9~mv2.png'}, 
-  {'name': "Ma'amoul", 'desc': maamoul, 'link': 'https://static.wixstatic.com/media/a8ca8a_81db354d3eaa4516a9e32bebc08a9804~mv2.png/v1/fill/w_236,h_177,fp_0.50_0.50,q_95,enc_auto/a8ca8a_81db354d3eaa4516a9e32bebc08a9804~mv2.png'}, 
-  {'name':'Pieczone owoce', 'desc': pieczoneowoce, 'link': 'https://static.wixstatic.com/media/a8ca8a_8ce0e0e4c5e0483baa0c3ea5be7a54e8~mv2.jpg/v1/fill/w_237,h_133,fp_0.50_0.50,q_90,enc_auto/a8ca8a_8ce0e0e4c5e0483baa0c3ea5be7a54e8~mv2.jpg'}, 
-  {'name':'Szakszuka', 'desc': szakszuka, 'link': 'https://static.wixstatic.com/media/a8ca8a_9a39e7c5cf844afa9036687e42cfe30f~mv2.png/v1/fill/w_237,h_178,fp_0.50_0.50,q_95,enc_auto/a8ca8a_9a39e7c5cf844afa9036687e42cfe30f~mv2.png'}, 
-  {'name':'Buraki Noama', 'desc': burakiNoama, 'link': 'https://static.wixstatic.com/media/a8ca8a_c91188e37a58480d9327e15fdc289243~mv2.png/v1/fill/w_236,h_356,fp_0.50_0.50,q_95,enc_auto/a8ca8a_c91188e37a58480d9327e15fdc289243~mv2.png'},
-  {'name':'Humus to Mus', 'desc': humusToMus, 'link': 'https://static.wixstatic.com/media/a8ca8a_35a09378dbfb45c9a2de71591e71a7ae~mv2.png/v1/fill/w_237,h_536,fp_0.50_0.50,q_95,enc_auto/a8ca8a_35a09378dbfb45c9a2de71591e71a7ae~mv2.png'},
-  {'name':'Zimowy Kuskus', 'desc': zimowyKuskus, 'link': 'https://static.wixstatic.com/media/a8ca8a_a54ca850079640dc932145ad36a39339~mv2.png/v1/fill/w_237,h_133,fp_0.50_0.50,q_95,enc_auto/a8ca8a_a54ca850079640dc932145ad36a39339~mv2.png'},
-  {'name':'Klasyczne Latkes', 'desc': klasyczneLatkes, 'link': 'https://static.wixstatic.com/media/a8ca8a_6918a6c79f954022b670ccb260c4c969~mv2.png/v1/fill/w_236,h_133,fp_0.50_0.50,q_95,enc_auto/a8ca8a_6918a6c79f954022b670ccb260c4c969~mv2.png'},
-  {'name':'Sufganiyot', 'desc': sufganiyot, 'link': 'https://static.wixstatic.com/media/a8ca8a_f01391a3effc4ac594285337d4384270~mv2.jpg/v1/fill/w_356,h_200,fp_0.50_0.50,q_90,enc_auto/a8ca8a_f01391a3effc4ac594285337d4384270~mv2.jpg'},
-  ];
+// final List<Map<String, dynamic>> _azaza = [
+//   {'name': 'Kugel Jerozolimski', 'desc': kugeljerozolimski, 'link': 'https://static.wixstatic.com/media/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg/v1/fill/w_284,h_284,fp_0.50_0.50,q_90,enc_auto/a8ca8a_0b581b7af2d9488089e9950df8623555~mv2.jpg'}, 
+//   {'name':'Śledź po wileńsku', 'desc': sledzpowilensku, 'link': 'https://static.wixstatic.com/media/a8ca8a_ad134cbc588d42c395276557ff50fff9~mv2.png/v1/fill/w_237,h_258,fp_0.50_0.50,q_95,enc_auto/a8ca8a_ad134cbc588d42c395276557ff50fff9~mv2.png'}, 
+//   {'name': "Ma'amoul", 'desc': maamoul, 'link': 'https://static.wixstatic.com/media/a8ca8a_81db354d3eaa4516a9e32bebc08a9804~mv2.png/v1/fill/w_236,h_177,fp_0.50_0.50,q_95,enc_auto/a8ca8a_81db354d3eaa4516a9e32bebc08a9804~mv2.png'}, 
+//   {'name':'Pieczone owoce', 'desc': pieczoneowoce, 'link': 'https://static.wixstatic.com/media/a8ca8a_8ce0e0e4c5e0483baa0c3ea5be7a54e8~mv2.jpg/v1/fill/w_237,h_133,fp_0.50_0.50,q_90,enc_auto/a8ca8a_8ce0e0e4c5e0483baa0c3ea5be7a54e8~mv2.jpg'}, 
+//   {'name':'Szakszuka', 'desc': szakszuka, 'link': 'https://static.wixstatic.com/media/a8ca8a_9a39e7c5cf844afa9036687e42cfe30f~mv2.png/v1/fill/w_237,h_178,fp_0.50_0.50,q_95,enc_auto/a8ca8a_9a39e7c5cf844afa9036687e42cfe30f~mv2.png'}, 
+//   {'name':'Buraki Noama', 'desc': burakiNoama, 'link': 'https://static.wixstatic.com/media/a8ca8a_c91188e37a58480d9327e15fdc289243~mv2.png/v1/fill/w_236,h_356,fp_0.50_0.50,q_95,enc_auto/a8ca8a_c91188e37a58480d9327e15fdc289243~mv2.png'},
+//   {'name':'Humus to Mus', 'desc': humusToMus, 'link': 'https://static.wixstatic.com/media/a8ca8a_35a09378dbfb45c9a2de71591e71a7ae~mv2.png/v1/fill/w_237,h_536,fp_0.50_0.50,q_95,enc_auto/a8ca8a_35a09378dbfb45c9a2de71591e71a7ae~mv2.png'},
+//   {'name':'Zimowy Kuskus', 'desc': zimowyKuskus, 'link': 'https://static.wixstatic.com/media/a8ca8a_a54ca850079640dc932145ad36a39339~mv2.png/v1/fill/w_237,h_133,fp_0.50_0.50,q_95,enc_auto/a8ca8a_a54ca850079640dc932145ad36a39339~mv2.png'},
+//   {'name':'Klasyczne Latkes', 'desc': klasyczneLatkes, 'link': 'https://static.wixstatic.com/media/a8ca8a_6918a6c79f954022b670ccb260c4c969~mv2.png/v1/fill/w_236,h_133,fp_0.50_0.50,q_95,enc_auto/a8ca8a_6918a6c79f954022b670ccb260c4c969~mv2.png'},
+//   {'name':'Sufganiyot', 'desc': sufganiyot, 'link': 'https://static.wixstatic.com/media/a8ca8a_f01391a3effc4ac594285337d4384270~mv2.jpg/v1/fill/w_356,h_200,fp_0.50_0.50,q_90,enc_auto/a8ca8a_f01391a3effc4ac594285337d4384270~mv2.jpg'},
+//   ];
