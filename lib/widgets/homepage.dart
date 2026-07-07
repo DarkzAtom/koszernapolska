@@ -35,7 +35,6 @@ class _StartPageState extends State<StartPage> {
 
   int currentPageIndex = 0;
   int testowa = 0;
-  final List<Map<String, dynamic>> _aktualki = [{'name': 'Ghajskd', 'desc': 'pierbyaf'}, {'name':'Shjs', 'desc': 'vtoroj nasd'}, {'name':'Sdfs', 'desc': 'tretij asdjkasd'}, {'name':'I dont care', 'desc': 'chetverty asdkasda'}, {'name':'Sdsfsd', 'desc': 'pyatyj sdhfjksdfsd'}, {'name': 'Sddfgdgdg', 'desc': 'shostyj dfhjsdfs'},{'name':'Ssdasdas', 'desc': 'sedmohj safdhsjdkfsdfsd'}];
   List<Map<String, dynamic>> data = [];
 
   @override
@@ -50,8 +49,6 @@ class _StartPageState extends State<StartPage> {
   data = querySnapshot.docs.map((doc) => doc.data()).where((item) => item != null).toList().cast<Map<String, dynamic>>();
   setState(() {});  // Call setState to trigger a rebuild of the widget with the new data
 }
-
-
 
 
   @override

@@ -325,6 +325,8 @@ class KosherPlacesPageBuilder extends StatelessWidget {
 
 // the list of kosher products section --- sekcja z koszernymi produktami
 
+
+List<Map<String, dynamic>> dataKosherProducts = [];
 class KosherList extends StatefulWidget {
   const KosherList({super.key});
 
